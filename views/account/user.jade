@@ -16,7 +16,7 @@ block content
     .grid
       for item in pins.reverse()
         .grid-item
-          if (user.profile.name === username.profile.name)
+          if (user && user.profile.name === username.profile.name)
             form(role='form', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               input(type='hidden', name='title', value=item.title)

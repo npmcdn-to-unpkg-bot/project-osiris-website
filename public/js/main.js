@@ -17,7 +17,7 @@ $(document).ready(function() {
     itemSelector: '.grid-item',
     fitWidth: true,
     transitionDuration: '0.8s',
-    columnWidth: 5
+    columnWidth: 10
   });
   // Set layout so no image overlap on image load
   $grid.imagesLoaded().progress( function() {
