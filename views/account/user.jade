@@ -19,7 +19,7 @@ block content
           if (user.profile.name === username.profile.name)
             form(role='form', method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
-              input(type='hidden', name='title', value=item.owner)
+              input(type='hidden', name='title', value=item.title)
               input(type='hidden', name='url', value=item.url)
               button.btn.btn-danger(type='submit')
                 i.fa.fa-trash
