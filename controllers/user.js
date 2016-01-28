@@ -41,10 +41,8 @@ exports.postUser = function(req, res, next) {
     }
     Pins.findOne({}, function(err, pins) {
       var pindex = pins.pins.map(function(pin) { // :D like the var name?
-        console.log(pin.owner+pin.title+pin.url, req.params.username+req.body.title+req.body.url);
         return pin.owner+pin.title+pin.url;
       }).indexOf(req.params.username+req.body.title+req.body.url);
-      console.log(pindex);
       pins.pins.splice(pindex, 1);
       pins.save(function(err) {
         if (err) {
