@@ -6,6 +6,10 @@ $(document).ready(function() {
   $("#url").on('keyup', function(e) {
     $("#img-preview").attr("src", $("#url").val());
   })
+  // Replace broken images
+  $("#img-preview").error(function() {
+    $(this).attr("src", "http://dummyimage.com/800x600&text=Pinternet");
+  });
   var $grid = $('.grid').masonry({
     itemSelector: '.grid-item',
     fitWidth: true,
