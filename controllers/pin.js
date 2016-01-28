@@ -2,6 +2,7 @@
 var User = require('../models/User');
 var Pin = require('../models/Pin');
 var Pins = require('../models/Pins');
+var request = require('request');
 
 /**
  * GET /pin
@@ -35,14 +36,17 @@ exports.postPin = function(req, res) {
     req.flash('errors', { msg: "Must log in to post" });
     return res.redirect('/login');
   }
-  var pin = new Pin({
-    owner: req.user.profile.name,
-    pins: 0,
-    title: title,
-    url: url
-  })
-  Pins.findOneAndUpdate({}, {$push: {pins: pin}}, {upsert: true}, function(e, fin) {
-    req.flash('success', { msg: 'Pin posted successfully!' });
-    res.redirect('/');
+  request(url, function(error, response, body) {
+    if (error) url = "http://dummyimage.com/800x600&text=Pinternet";
+    var pin = new Pin({
+      owner: req.user.profile.name,
+      pins: 0,
+      title: title,
+      url: url
+    })
+    Pins.findOneAndUpdate({}, {$push: {pins: pin}}, {upsert: true}, function(e, fin) {
+      req.flash('success', { msg: 'Pin posted successfully!' });
+      res.redirect('/');
+    });
   });
 };

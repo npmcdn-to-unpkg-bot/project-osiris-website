@@ -17,6 +17,10 @@ exports.getUser = function(req, res) {
       return res.redirect('/');
     }
     Pins.findOne({}, function(err, pins) {
+      if (err) {
+        req.flash('errors', { msg: "Pins not found" });
+        return res.redirect('/');
+      }
       var pins = pins.pins.filter(function(pin) {
         return pin.owner === req.params.username;
       }) || [];
