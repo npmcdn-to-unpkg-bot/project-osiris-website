@@ -9,7 +9,7 @@ block content
     .grid
       for item in pins.reverse().splice(0,100)
         .grid-item
-          a(href='#', data-featherlight=item.url)
+          a.gallery(href=item.url)
             img.grid-img(src=item.url)
           h3 #{item.title}
           a(href='/user/'+item.owner) #{item.owner}

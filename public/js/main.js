@@ -23,4 +23,14 @@ $(document).ready(function() {
   $grid.imagesLoaded().progress( function() {
     $grid.masonry('layout');
   });
+  // Set gallery
+  $("a.gallery").featherlightGallery();
+  $(".gallery").featherlightGallery({
+		gallery: {
+			fadeIn: 300,
+			fadeOut: 300
+		},
+		openSpeed:    300,
+		closeSpeed:   300
+	});
 });

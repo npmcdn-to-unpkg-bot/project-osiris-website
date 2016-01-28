@@ -24,7 +24,7 @@ block content
               button.btn.btn-danger(type='submit')
                 i.fa.fa-trash
                 | Delete
-          a(href='#', data-featherlight=item.url)
+          a.gallery(href=item.url)
             img.grid-img(src=item.url)
           h3 #{item.title}
           a(href='/user/'+item.owner) #{item.owner}
