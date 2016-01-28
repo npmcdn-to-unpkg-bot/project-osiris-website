@@ -42,11 +42,18 @@ exports.postUser = function(req, res) {
       var pindex = pins.pins.map(function(pin) { // :D like the var name?
         return pin.owner+pin.title+pin.url;
       }).indexOf(req.params.username+req.body.title+req.body.url);
-      res.render('account/user', {
-        username: user,
-        pins: pins
+      pins.pins.splice(pindex, 1);
+      pins.save(function(err) {
+        if (err) {
+          return next(err);
+        }
+        req.flash('success', { msg: 'Pin deleted successfully' });
+        res.render('account/user', {
+          username: req.params.username,
+          pins: pins
+        });
       });
-    })
+    });
   });
 };
 
