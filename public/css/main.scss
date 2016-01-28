@@ -2,6 +2,7 @@ html {
   position: relative;
   min-height: 100%;
 }
+/* For static nav and footer */
 body {
   padding-top: 70px;
   margin-bottom: 75px;
@@ -19,10 +20,17 @@ body {
   font-family: monospace;
   text-align: center;
 }
+/* Delete button form */
+.grid-item > form {
+  position: absolute;
+  top: 5px;
+  right: 5px
+}
 .grid-img {
   max-width:100%;
   left: 10px;
 }
+/* Static navbar */
 .navbar-nav img {
   width: 30px;
   height: 30px;
@@ -31,6 +39,7 @@ body {
 .alert {
   margin-top: 20px;
 }
+/* Static footer */
 footer {
   position: absolute;
   bottom: 0;
@@ -42,6 +51,7 @@ footer {
     margin-bottom: 0;
   }
 }
+/* Margin on fa icons */
 .fa {
   margin-right: 6px;
 }

@@ -28,6 +28,27 @@ exports.getUser = function(req, res) {
   });
 };
 
+/**
+ * POST /user/:user (deleteing pins)
+ */
+
+exports.postUser = function(req, res) {
+  User.findOne({"profile.name": req.params.username}, function(err, user) {
+    if (err || req.params.username !== req.user.profile.name) {
+      req.flash('errors', { msg: "Invalid request" });
+      return res.redirect('/');
+    }
+    Pins.findOne({}, function(err, pins) {
+      var pindex = pins.pins.map(function(pin) { // :D like the var name?
+        return pin.owner+pin.title+pin.url;
+      }).indexOf(req.params.username+req.body.title+req.body.url);
+      res.render('account/user', {
+        username: user,
+        pins: pins
+      });
+    })
+  });
+};
 
 /**
  * GET /login

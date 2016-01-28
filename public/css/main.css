@@ -22,6 +22,12 @@ body {
   text-align: center;
 }
 
+.grid-item > form {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 .grid-img {
   max-width: 100%;
   left: 10px;

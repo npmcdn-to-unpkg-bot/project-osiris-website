@@ -16,6 +16,13 @@ block content
     .grid
       for item in pins.reverse()
         .grid-item
+          if (user.profile.name === username.profile.name)
+            form(role='form', method='POST')
+              input(type='hidden', name='title', value=item.owner)
+              input(type='hidden', name='url', value=item.url)
+              button.btn.btn-danger(type='submit')
+                i.fa.fa-trash
+                | Delete
           a(href='#', data-featherlight=item.url)
             img.grid-img(src=item.url)
           h3 #{item.title}
