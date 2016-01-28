@@ -32,7 +32,7 @@ exports.getUser = function(req, res) {
  * POST /user/:user (deleteing pins)
  */
 
-exports.postUser = function(req, res) {
+exports.postUser = function(req, res, next) {
   User.findOne({"profile.name": req.params.username}, function(err, user) {
     if (err || req.params.username !== req.user.profile.name) {
       req.flash('errors', { msg: "Invalid request" });
