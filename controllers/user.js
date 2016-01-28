@@ -21,6 +21,7 @@ exports.getUser = function(req, res) {
         return pin.owner === req.params.username;
       }) || [];
       res.render('account/user', {
+        title: user.profile.name,
         username: user,
         pins: pins
       });
