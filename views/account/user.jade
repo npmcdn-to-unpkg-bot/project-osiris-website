@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 #{username.profile.name}
+  .row
+    img(src="#{username.gravatar()}", class='profile', width='100', height='100').col
+    h4 <b>Email:</b> #{username.email}
+    h4 <b>Username:</b> #{username.profile.name}
+    h4 <b>Location:</b> #{username.profile.location}
+    h4 <b>Website:</b>&nbsp;
+      a(href='#{username.profile.website}', target='_blank') #{username.profile.website}
+  .page-header
+    h3 Pins
+  if (pins.length > 0)
+    .grid
+      for item in pins.reverse()
+        .grid-item
+          a(href='#', data-featherlight=item.url)
+            img.grid-img(src=item.url)
+          h3 #{item.title}
+          a(href='/user/'+item.owner) #{item.owner}
+  else
+    h4 None found

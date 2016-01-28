@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Pinternet App
+  p.lead A Pinterest Clone created for&nbsp;
+    a(href='http://www.freecodecamp.com', target='_blank') freecodecamp
+  hr
+  .row
+    .grid
+      for item in pins.reverse()
+        .grid-item
+          a(href='#', data-featherlight=item.url)
+            img.grid-img(src=item.url)
+          h3 #{item.title}
+          a(href='/user/'+item.owner) #{item.owner}
