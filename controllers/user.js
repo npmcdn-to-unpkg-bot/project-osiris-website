@@ -50,7 +50,8 @@ exports.postUser = function(req, res, next) {
         }
         req.flash('success', { msg: 'Pin deleted successfully' });
         res.render('account/user', {
-          username: req.params.username,
+          title: user.profile.name,
+          username: user,
           pins: pins
         });
       });
