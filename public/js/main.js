@@ -6,10 +6,10 @@ $(document).ready(function() {
   })
   // Set image preview
   $("#url").on('keyup', function(e) {
-    $("#img-preview").attr("src", $("#url").val());
+    $("#img-preview").attr("src", $(this).val());
   })
   // Replace broken images
-  $("#img-preview").error(function() {
+  $(".grid-img").error(function() {
     $(this).attr("src", "http://dummyimage.com/800x600&text=Pinternet");
   });
   // Show grid
