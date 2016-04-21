@@ -3,7 +3,7 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
-var Pins = require('../models/Pins');
+var Encounters = require('../models/Encounters');
 var User = require('../models/User');
 
 /**
@@ -16,25 +16,15 @@ exports.getUser = function(req, res) {
       req.flash('errors', { msg: "User does not exist" });
       return res.redirect('/');
     }
-    Pins.findOne({}, function(err, pins) {
-      if (err) {
-        req.flash('errors', { msg: "Pins not found" });
-        return res.redirect('/');
-      }
-      var pins = pins.pins.filter(function(pin) {
-        return pin.owner === req.params.username;
-      }) || [];
-      res.render('account/user', {
-        title: user.profile.name,
-        username: user,
-        pins: pins
-      });
-    })
+    res.render('account/user', {
+      title: user.profile.name,
+      username: user
+    });
   });
 };
 
 /**
- * POST /user/:user (deleteing pins)
+ * POST /user/:user (deleteing encounters)
  */
 
 exports.postUser = function(req, res, next) {
@@ -43,25 +33,9 @@ exports.postUser = function(req, res, next) {
       req.flash('errors', { msg: "Invalid request" });
       return res.redirect('/');
     }
-    Pins.findOne({}, function(err, pins) {
-      var pindex = pins.pins.map(function(pin) { // :D like the var name?
-        return pin.owner+pin.title+pin.url;
-      }).indexOf(req.params.username+req.body.title+req.body.url);
-      pins.pins.splice(pindex, 1);
-      pins.save(function(err) {
-        if (err) {
-          return next(err);
-        }
-        var newpins = pins.pins.filter(function(pin) {
-          return pin.owner === req.params.username;
-        }) || [];
-        req.flash('success', { msg: 'Pin deleted successfully' });
-        res.render('account/user', {
-          title: user.profile.name,
-          username: user,
-          pins: newpins
-        });
-      });
+    res.render('account/user', {
+      title: user.profile.name,
+      username: user
     });
   });
 };
@@ -370,7 +344,7 @@ exports.postReset = function(req, res, next) {
       var mailOptions = {
         to: user.email,
         from: 'hermanfassett@gmail.com',
-        subject: 'Your Pinternet app password has been changed',
+        subject: 'Your Encounterternet app password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
@@ -445,7 +419,7 @@ exports.postForgot = function(req, res, next) {
       var mailOptions = {
         to: user.email,
         from: 'hermanfassett@gmail.com',
-        subject: 'Reset your password on Pinternet app',
+        subject: 'Reset your password on Encounterternet app',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +

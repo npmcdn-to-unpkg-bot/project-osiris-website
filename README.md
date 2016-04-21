@@ -1,5 +1,5 @@
 
-Pinternet App
+Project Osiris
 =======================
 
-**Live At**: http://pinternetapp.herokuapp.com
+**Live At**: http://project-osiris.herokuapp.com

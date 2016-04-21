@@ -33,7 +33,7 @@ dotenv.load({ path: '.env' });
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
-var pinController = require('./controllers/pin');
+var pinController = require('./controllers/encounter');
 
 /**
  * API keys and Passport configuration.
@@ -118,8 +118,8 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/pin', passportConf.isAuthenticated, pinController.getPin);
-app.post('/pin', passportConf.isAuthenticated, pinController.postPin);
+app.get('/encounter', passportConf.isAuthenticated, pinController.getEncounter);
+app.post('/encounter', passportConf.isAuthenticated, pinController.postEncounter);
 app.get('/user/:username', userController.getUser);
 app.post('/user/:username', passportConf.isAuthenticated, userController.postUser);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);

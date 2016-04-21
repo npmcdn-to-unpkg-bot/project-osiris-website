@@ -1,24 +1,24 @@
 // Load models
 var User = require('../models/User');
-var Pin = require('../models/Pin');
-var Pins = require('../models/Pins');
+var Encounter = require('../models/Encounter');
+var Encounters = require('../models/Encounters');
 var request = require('request');
 
 /**
- * GET /pin
- * Pin page.
+ * GET /encounter
+ * Encounter page.
  */
-exports.getPin = function(req, res) {
-  res.render('pin', {
-    title: 'Pin'
+exports.getEncounter = function(req, res) {
+  res.render('encounter', {
+    title: 'Encounter'
   });
 };
 
 /**
- * POST /pin
- * Post a pin
+ * POST /encounter
+ * Post an encounter
  */
-exports.postPin = function(req, res) {
+exports.postEncounter = function(req, res) {
   req.assert('title', 'Title cannot be blank').notEmpty();
   req.assert('url', 'Image URL is not valid').notEmpty();
 
@@ -26,7 +26,7 @@ exports.postPin = function(req, res) {
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/pin');
+    return res.redirect('/encounter');
   }
 
   var title = req.body.title;
@@ -37,15 +37,15 @@ exports.postPin = function(req, res) {
     return res.redirect('/login');
   }
   request(url, function(error, response, body) {
-    if (error) url = "http://dummyimage.com/800x600&text=Pinternet";
-    var pin = new Pin({
+    if (error) url = "http://dummyimage.com/800x600&text=Encounter";
+    var encounter = new Encounter({
       owner: req.user.profile.name,
-      pins: 0,
+      encounters: 0,
       title: title,
       url: url
     })
-    Pins.findOneAndUpdate({}, {$push: {pins: pin}}, {upsert: true}, function(e, fin) {
-      req.flash('success', { msg: 'Pin posted successfully!' });
+    Encounters.findOneAndUpdate({}, {$push: {encounters: encounter}}, {upsert: true}, function(e, fin) {
+      req.flash('success', { msg: 'Encounter posted successfully!' });
       res.redirect('/');
     });
   });
