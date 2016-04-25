@@ -39,8 +39,8 @@ exports.postEncounter = function(req, res) {
   }
 
   //Generate CSV
-  var title = req.body.title;
-  var data = req.body.data;
+  var title = req.body.title.replace(/,/g, "");
+  var data = req.body.data.replace(/,/g,"");
   var number = req.body.number;
   var type = req.body.type;
 
