@@ -33,7 +33,7 @@ dotenv.load();
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
-var pinController = require('./controllers/encounter');
+var encounterController = require('./controllers/encounter');
 
 /**
  * API keys and Passport configuration.
@@ -80,7 +80,7 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: process.env.MONGODB || process.env.MONGOLAB_URI,
+    url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
     autoReconnect: true
   })
 }));
@@ -118,8 +118,8 @@ app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/encounter', passportConf.isAuthenticated, pinController.getEncounter);
-app.post('/encounter', passportConf.isAuthenticated, pinController.postEncounter);
+app.get('/encounter', passportConf.isAuthenticated, encounterController.getEncounter);
+app.post('/encounter', passportConf.isAuthenticated, encounterController.postEncounter);
 app.get('/user/:username', userController.getUser);
 app.post('/user/:username', passportConf.isAuthenticated, userController.postUser);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);

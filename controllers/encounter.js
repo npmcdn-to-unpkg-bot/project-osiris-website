@@ -20,33 +20,41 @@ exports.getEncounter = function(req, res) {
  */
 exports.postEncounter = function(req, res) {
   req.assert('title', 'Title cannot be blank').notEmpty();
-  req.assert('url', 'Image URL is not valid').notEmpty();
+  req.assert('data', 'Data cannot be empty').notEmpty();
+  req.assert('number', 'Number cannot be blank').notEmpty();
+  req.assert('type', 'Type cannot be unspecified').notEmpty();
 
   var errors = req.validationErrors();
 
+  // Check for errors
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/encounter');
   }
 
-  var title = req.body.title;
-  var url = req.body.url;
-
+  // Check for log in
   if (!req.user) {
-    req.flash('errors', { msg: "Must log in to post" });
+    req.flash('errors', { msg: "Must log in to create encounter" });
     return res.redirect('/login');
   }
-  request(url, function(error, response, body) {
-    if (error) url = "http://dummyimage.com/800x600&text=Encounter";
-    var encounter = new Encounter({
-      owner: req.user.profile.name,
-      encounters: 0,
-      title: title,
-      url: url
-    })
-    Encounters.findOneAndUpdate({}, {$push: {encounters: encounter}}, {upsert: true}, function(e, fin) {
-      req.flash('success', { msg: 'Encounter posted successfully!' });
-      res.redirect('/');
-    });
+
+  //Generate CSV
+  var title = req.body.title;
+  var data = req.body.data;
+  var number = req.body.number;
+  var type = req.body.type;
+
+  var csv = [["title", "number", "type", "data"], [title, number, type, data]];
+  var csvContent = "";//"data:text/csv;charset=utf-8,";
+  csv.forEach(function(infoArray, index){
+    dataString = infoArray.join(",");
+    csvContent += index < csv.length ? dataString+ "\n" : dataString;
   });
+
+  // Download CSV
+  res.setHeader('Content-disposition', 'attachment; filename=testing.csv');
+  res.set('Content-Type', 'text/csv');
+  res.status(200).send(csvContent);
+  //var encodedUri = encodeURI(csvContent);
+  //res.csv(csv);
 };
