@@ -55,6 +55,4 @@ exports.postEncounter = function(req, res) {
   res.setHeader('Content-disposition', 'attachment; filename=testing.csv');
   res.set('Content-Type', 'text/csv');
   res.status(200).send(csvContent);
-  //var encodedUri = encodeURI(csvContent);
-  //res.csv(csv);
 };
