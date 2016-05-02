@@ -120,6 +120,7 @@ app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/encounter', passportConf.isAuthenticated, encounterController.getEncounter);
 app.post('/encounter', passportConf.isAuthenticated, encounterController.postEncounter);
+app.get('/encounters', encounterController.getEncounters);
 app.get('/user/:username', userController.getUser);
 app.post('/user/:username', passportConf.isAuthenticated, userController.postUser);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);

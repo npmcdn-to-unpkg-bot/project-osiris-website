@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    div.container
+        h1 Encounters
+        hr
+        div.col-md-3
+            a.btn.btn-success.btn-block.fa.fa-plus(href='/encounter')  New Encounter
+            a.btn.btn-primary.btn-block.fa.fa-user(href='#')  My Encounters
+        div.col-md-9
+          
+          .row
+            .grid
+              for item in encounters.reverse().splice(0,100)
+                .grid-item
+                  h4 #{item.title}
+                  a(href='/user/'+item.owner) #{item.owner}

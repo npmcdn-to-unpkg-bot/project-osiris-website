@@ -12,9 +12,11 @@
       ul.nav.navbar-nav
         li(class=title=='Home'?'active':undefined)
           a(href='/') Home
+        li(class=title=='Encounters'?'active':undefined)
+          a(href='/encounters') Encounters
         if user
           li(class=title=='Encounter'?'active':undefined)
-            a(href='/encounter') Encounter
+            a(href='/encounter') New
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)

@@ -5,6 +5,27 @@ var Encounters = require('../models/Encounters');
 var request = require('request');
 
 /**
+ * GET /encounters
+ * Encounters page.
+ */
+exports.getEncounters = function(req, res) {
+  Encounters.findOne({}, function(err, encounter) {
+    var encounters = (encounter)? encounter.encounters : [
+      {title:"Encounter1", owner:"herman_fassett"},
+      {title:"Untitled Encounter", owner:"herman_fassett"},
+      {title:"This is a rather long title for an encounter to have", owner:"herman_fassett"},
+      {title:"This encounter is hilarious", owner:"herman_fassett"},
+      {title:"You will die", owner:"herman_fassett"}
+    ];
+    res.render('encounters', {
+      title: 'Encounters',
+      encounters: encounters
+    });
+  });
+};
+
+
+/**
  * GET /encounter
  * Encounter page.
  */
