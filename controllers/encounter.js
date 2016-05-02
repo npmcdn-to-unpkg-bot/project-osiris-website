@@ -11,11 +11,9 @@ var request = require('request');
 exports.getEncounters = function(req, res) {
   Encounters.findOne({}, function(err, encounter) {
     var encounters = (encounter)? encounter.encounters : [
-      {title:"Encounter1", owner:"herman_fassett"},
-      {title:"Untitled Encounter", owner:"herman_fassett"},
-      {title:"This is a rather long title for an encounter to have", owner:"herman_fassett"},
-      {title:"This encounter is hilarious", owner:"herman_fassett"},
-      {title:"You will die", owner:"herman_fassett"}
+      {_id: "1", title:"Encounter1", owner:"Herman Fassett", description: "Lame description"},
+      {_id: "2", title:"Untitled Encounter", owner:"Herman Fassett", description: "Hello"},
+      {_id: "3", title:"This is a rather long title for an encounter to have", owner:"Herman Fassett", description: "This description is"}
     ];
     res.render('encounters', {
       title: 'Encounters',
@@ -24,14 +22,34 @@ exports.getEncounters = function(req, res) {
   });
 };
 
+exports.loadEncounter = function(req, res) {
+  Encounters.findOne({}, function(err, encounter) {
+    var encs = encounter.encounters;
+    if (encs.length) {
+      for (var i = 0; i < encs.length; i++) {
+        if (encs[i]._id == req.params.id) {
+          res.render('encounter', {
+            title: encs[i].title,
+            owner: encs[i].owner,
+            description: encs[i].description
+          })
+        }
+        else if (i == encs.length && encs[i]._id != req.params.id) {
+          req.flash('error', {msg: "Encounter not found."});
+          res.redirect('/encounters');
+        }
+      }
+    }
+  });
+};
 
 /**
  * GET /encounter
  * Encounter page.
  */
 exports.getEncounter = function(req, res) {
-  res.render('encounter', {
-    title: 'Encounter'
+  res.render('new', {
+    title: 'New Encounter'
   });
 };
 
@@ -39,11 +57,46 @@ exports.getEncounter = function(req, res) {
  * POST /encounter
  * Post an encounter
  */
+ 
 exports.postEncounter = function(req, res) {
   req.assert('title', 'Title cannot be blank').notEmpty();
-  req.assert('data', 'Data cannot be empty').notEmpty();
-  req.assert('number', 'Number cannot be blank').notEmpty();
-  req.assert('type', 'Type cannot be unspecified').notEmpty();
+  req.assert('description', 'Description cannot be empty').notEmpty();
+
+  var errors = req.validationErrors();
+
+  // Check for errors
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/encounter');
+  }
+
+  // Check for log in
+  if (!req.user) {
+    req.flash('errors', { msg: "Must log in to create encounter" });
+    return res.redirect('/login');
+  }
+  
+  var title = req.body.title.replace(/,/g, "");
+  var description = req.body.description.replace(/,/g,"");
+  
+  var encounter = new Encounter({
+    owner: req.user.profile.name,
+    title: title,
+    description: description
+  });
+  Encounters.findOneAndUpdate({}, {$push: {encounters: encounter}}, {upsert: true}, function(e, fin) {
+    req.flash('success', {msg: "Encounter successfully created!"});
+    res.redirect('/encounters');
+  });
+}
+
+/**
+ *  Download encounter as CSV
+ */
+ 
+exports.downloadEncounter = function(req, res) {
+  req.assert('title', 'Title cannot be blank').notEmpty();
+  req.assert('description', 'Description cannot be empty').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -61,11 +114,9 @@ exports.postEncounter = function(req, res) {
 
   //Generate CSV
   var title = req.body.title.replace(/,/g, "");
-  var data = req.body.data.replace(/,/g,"");
-  var number = req.body.number;
-  var type = req.body.type;
+  var description = req.body.description.replace(/,/g,"");
 
-  var csv = [["title", "number", "type", "data"], [title, number, type, data]];
+  var csv = [["title", "description"], [title, description]];
   var csvContent = "";//"data:text/csv;charset=utf-8,";
   csv.forEach(function(infoArray, index){
     dataString = infoArray.join(",");
@@ -73,7 +124,7 @@ exports.postEncounter = function(req, res) {
   });
 
   // Download CSV
-  res.setHeader('Content-disposition', 'attachment; filename=testing.csv');
+  res.setHeader('Content-disposition', 'attachment; filename='+title.replace(/\s/g, "_")+'.csv');
   res.set('Content-Type', 'text/csv');
   res.status(200).send(csvContent);
 };

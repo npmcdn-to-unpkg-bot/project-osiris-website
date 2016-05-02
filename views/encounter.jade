@@ -1,31 +1,15 @@
 extends layout
 
 block content
-  .page-header
-    h3 Create Encounter
-
-  form.form-horizontal(role='form', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label(class='col-sm-2 control-label', for='title') Title
-      .col-sm-8
-        input.form-control(type='text', name='title', id='title', autofocus=true, autocomplete='off', maxlength='100', placeholder='Title...')
-    .form-group
-      label(class='col-sm-2 control-label', for='number') Number
-      .col-sm-8
-        input.form-control(type='number', name='number', id='number', value='0')
-    .form-group
-      label(class='col-sm-2 control-label', for='type') Type
-      .col-sm-8
-        select.form-control#type(name='type')
-          option Small
-          option Medium
-          option Large
-
-    .form-group
-      label(class='col-sm-2 control-label', for='data') Data
-      .col-sm-8
-        input.form-control(type='text', name='data', id='data', placeholder='Data...')
-    .form-group
-      .col-sm-offset-2.col-sm-8
-        button.btn.btn-success(type='submit') Create
+    div.container
+        h1 #{title}
+        p.lead #{description}
+        p by 
+            a(href='/user/'+owner) #{owner}
+    form.form-horizontal(action='/download' role='form', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='title', id='title', value=title)
+        input(type='hidden', name='owner', id='owner', value=owner)
+        input(type='hidden', name='description', id='description', value=description)
+        button.btn.btn-success(type='submit') 
+            i.fa.fa-download  Download CSV

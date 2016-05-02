@@ -13,5 +13,7 @@ block content
             .grid
               for item in encounters.reverse().splice(0,100)
                 .grid-item
-                  h4 #{item.title}
+                  h4 
+                    a(href='/encounter/'+item._id) #{item.title}
+                  p.lead #{item.description}
                   a(href='/user/'+item.owner) #{item.owner}
