@@ -120,6 +120,7 @@ app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
 app.get('/new', passportConf.isAuthenticated, encounterController.getEncounter);
 app.post('/new', passportConf.isAuthenticated, encounterController.postEncounter);
+app.post('/delete', passportConf.isAuthenticated, encounterController.deleteEncounter);
 app.post('/download', encounterController.downloadEncounter);
 app.get('/encounter/:id', encounterController.loadEncounter);
 app.get('/encounters', encounterController.getEncounters);

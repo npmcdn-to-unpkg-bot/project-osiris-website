@@ -31,7 +31,8 @@ exports.loadEncounter = function(req, res) {
           res.render('encounter', {
             title: encs[i].title,
             owner: encs[i].owner,
-            description: encs[i].description
+            description: encs[i].description,
+            id: encs[i]._id
           })
         }
         else if (i == encs.length && encs[i]._id != req.params.id) {
@@ -86,6 +87,30 @@ exports.postEncounter = function(req, res) {
   });
   Encounters.findOneAndUpdate({}, {$push: {encounters: encounter}}, {upsert: true}, function(e, fin) {
     req.flash('success', {msg: "Encounter successfully created!"});
+    res.redirect('/encounters');
+  });
+}
+
+/**
+ * Delete Encounter
+ * 
+ */
+exports.deleteEncounter = function(req, res) {
+  // Check for log in
+  if (!req.user) {
+    req.flash('errors', { msg: "Must log in to create encounter" });
+    return res.redirect('/login');
+  }
+  else if (req.body.owner != req.user.profile.name) {
+    req.flash('errors', { msg: "You are not the owner of this encounter!"});
+    return res.redirect('/encounters');
+  }
+
+  var id = req.body.id;
+  
+  Encounters.findOneAndUpdate({}, {$pull: { "encounters": { _id: id } } }, function(e, fin) {
+    console.log(id, fin);
+    req.flash('success', {msg: "Encounter successfully deleted!"});
     res.redirect('/encounters');
   });
 }

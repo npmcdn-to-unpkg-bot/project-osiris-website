@@ -2,14 +2,25 @@ extends layout
 
 block content
     div.container
-        h1 #{title}
+    h1.text-title #{title}
+    hr
+    div.col-md-3
+        form.form-horizontal(action='/download' role='form', method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            input(type='hidden', name='title', id='title', value=title)
+            input(type='hidden', name='owner', id='owner', value=owner)
+            input(type='hidden', name='description', id='description', value=description)
+            button.btn.btn-block.btn-success(type='submit') 
+                i.fa.fa-download  Download CSV
+        if user && user.profile.name==owner
+            form.form-horizontal(action='/delete' role='form', method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)
+                input(type='hidden', name='id', id='id', value=id)
+                input(type='hidden', name='owner', id='owner', value=owner)
+                button.btn.btn-block.btn-danger
+                    i.fa.fa-trash  Delete Encounter 
+        hr
+    div.col-md-9
         p.lead #{description}
-        p by 
+        p.status by 
             a(href='/user/'+owner) #{owner}
-    form.form-horizontal(action='/download' role='form', method='POST')
-        input(type='hidden', name='_csrf', value=_csrf)
-        input(type='hidden', name='title', id='title', value=title)
-        input(type='hidden', name='owner', id='owner', value=owner)
-        input(type='hidden', name='description', id='description', value=description)
-        button.btn.btn-success(type='submit') 
-            i.fa.fa-download  Download CSV
