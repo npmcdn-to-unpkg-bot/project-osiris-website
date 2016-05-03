@@ -8,12 +8,10 @@ block content
             a.btn.btn-success.btn-block.fa.fa-plus(href='/new')  New Encounter
             a.btn.btn-primary.btn-block.fa.fa-user(href='#')  My Encounters
         div.col-md-9
-          
-          .row
-            .grid
-              for item in encounters.reverse().splice(0,100)
-                .grid-item.center-block
-                  h4 
-                    a(href='/encounter/'+item._id) #{item.title}
-                  p.lead #{item.description}
-                  a(href='/user/'+item.owner) #{item.owner}
+          div.grid
+            for item in encounters.reverse().splice(0,100)
+              div.grid-item.center-block
+                h4 
+                  a(href='/encounter/'+item._id) #{item.title}
+                p.lead #{item.description}
+                a(href='/user/'+item.owner) #{item.owner}
