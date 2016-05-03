@@ -12,7 +12,7 @@ block content
           .row
             .grid
               for item in encounters.reverse().splice(0,100)
-                .grid-item
+                .grid-item.center-block
                   h4 
                     a(href='/encounter/'+item._id) #{item.title}
                   p.lead #{item.description}
