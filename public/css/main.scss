@@ -16,7 +16,7 @@ body {
   min-height: 50px;
   box-shadow: 0 0 2px 1px gray;
   height: auto;
-  width: 380px !important;
+  min-width: 380px;
   padding: 15px;
   word-wrap: break-word;
   margin: 5px;
@@ -71,4 +71,10 @@ footer {
 /* Margin on fa icons */
 .fa {
   margin-right: 6px;
+}
+
+@media (max-width: 500px) {
+  .grid-item {
+    width: 100%;
+  }
 }

@@ -137,6 +137,14 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 app.use(errorHandler());
 
 /**
+ *  404 pages
+ */
+ app.use(function(req,res){
+    req.flash('errors', {msg: "404: Page not found"});
+    res.redirect('/');
+});
+
+/**
  * Start Express server.
  */
 app.listen(app.get('port'), function() {
