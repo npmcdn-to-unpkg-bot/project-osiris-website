@@ -75,6 +75,7 @@ footer {
 
 @media (max-width: 500px) {
   .grid-item {
+    min-width: 100%;
     width: 100%;
   }
 }
