@@ -9,6 +9,10 @@ body {
   margin-bottom: 75px;
 }
 
+.btn-space {
+  margin-bottom: 5px;
+}
+
 .grid {
   margin: 0 auto;
 }
