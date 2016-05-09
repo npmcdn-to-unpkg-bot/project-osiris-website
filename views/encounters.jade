@@ -13,5 +13,5 @@ block content
               div.grid-item.center-block
                 h4 
                   a(href='/encounter/'+item._id) #{item.title}
-                p.lead #{item.description.substr(0,100)}
+                p.lead #{(item.description.length > 100) ? item.description.substr(0,100) + "..." : item.description}
                 a(href='/user/'+item.owner) #{item.owner}
