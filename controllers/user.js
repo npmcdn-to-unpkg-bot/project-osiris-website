@@ -3,7 +3,6 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
-var Encounters = require('../models/Encounters');
 var User = require('../models/User');
 
 /**

@@ -1,7 +1,6 @@
 // Load models
 var User = require('../models/User');
 var Encounter = require('../models/Encounter');
-var Encounters = require('../models/Encounters');
 var request = require('request');
 
 /**
@@ -9,8 +8,8 @@ var request = require('request');
  * Encounters page.
  */
 exports.getEncounters = function(req, res) {
-  Encounters.findOne({}, function(err, encounter) {
-    var encounters = (encounter)? encounter.encounters : [
+  Encounter.find({}, function(err, encounter) {
+    var encounters = (encounter) ? encounter : [
       {_id: "1", title:"Encounter1", owner:"Herman Fassett", description: "Lame description"},
       {_id: "2", title:"Untitled Encounter", owner:"Herman Fassett", description: "Hello"},
       {_id: "3", title:"This is a rather long title for an encounter to have", owner:"Herman Fassett", description: "This description is"}
@@ -23,23 +22,18 @@ exports.getEncounters = function(req, res) {
 };
 
 exports.loadEncounter = function(req, res) {
-  Encounters.findOne({}, function(err, encounter) {
-    var encs = encounter.encounters;
-    if (encs.length) {
-      for (var i = 0; i < encs.length; i++) {
-        if (encs[i]._id == req.params.id) {
-          res.render('encounter', {
-            title: encs[i].title,
-            owner: encs[i].owner,
-            description: encs[i].description,
-            id: encs[i]._id
-          })
-        }
-        else if (i == encs.length && encs[i]._id != req.params.id) {
-          req.flash('error', {msg: "Encounter not found."});
-          res.redirect('/encounters');
-        }
-      }
+  Encounter.findById(req.params.id, function(err, enc) {
+    if (err) {
+      req.flash('error', {msg: "Encounter not found."});
+      res.redirect('/encounters');
+    }
+    else {
+      res.render('encounter', {
+        title: enc.title,
+        owner: enc.owner,
+        description: enc.description,
+        id: enc._id
+      })
     }
   });
 };
@@ -85,10 +79,14 @@ exports.postEncounter = function(req, res) {
     title: title,
     description: description
   });
-  Encounters.findOneAndUpdate({}, {$push: {encounters: encounter}}, {upsert: true}, function(e, fin) {
-    req.flash('success', {msg: "Encounter successfully created!"});
-    res.redirect('/encounters');
-  });
+  
+  encounter.save(function(err) {
+    if (err) res.redirect('/');
+    else {
+      req.flash('success', {msg: "Encounter successfully created!"});
+      res.redirect('/encounters');
+    }
+  })
 }
 
 /**
@@ -108,8 +106,7 @@ exports.deleteEncounter = function(req, res) {
 
   var id = req.body.id;
   
-  Encounters.findOneAndUpdate({}, {$pull: { "encounters": { _id: id } } }, function(e, fin) {
-    console.log(id, fin);
+  Encounter.findById(id).remove(function(err) {
     req.flash('success', {msg: "Encounter successfully deleted!"});
     res.redirect('/encounters');
   });
