@@ -9,17 +9,21 @@ var request = require('request');
  */
 exports.getEncounters = function(req, res) {
   Encounter.find({}, function(err, encounter) {
-    var encounters = (encounter) ? encounter : [
-      {_id: "1", title:"Encounter1", owner:"Herman Fassett", description: "Lame description"},
-      {_id: "2", title:"Untitled Encounter", owner:"Herman Fassett", description: "Hello"},
-      {_id: "3", title:"This is a rather long title for an encounter to have", owner:"Herman Fassett", description: "This description is"}
-    ];
     res.render('encounters', {
       title: 'Encounters',
-      encounters: encounters
+      encounters: encounter
     });
   });
 };
+
+exports.getMyEncounters = function(req, res) {
+  Encounter.find({owner: req.user.profile.name}, function(err, encounter) {
+    res.render('encounters', {
+      title: 'Encounters',
+      encounters: encounter
+    })
+  });
+}
 
 exports.loadEncounter = function(req, res) {
   Encounter.findById(req.params.id, function(err, enc) {
