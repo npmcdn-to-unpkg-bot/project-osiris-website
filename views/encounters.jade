@@ -6,7 +6,8 @@ block content
         hr
         div.col-md-3
           a.btn.btn-success.btn-block.fa.fa-plus(href='/new')  New Encounter
-          a.btn.btn-primary.btn-block.fa.fa-user(href='/mine')  My Encounters
+          if user
+            a.btn.btn-primary.btn-block.fa.fa-user(href='/user/'+user.profile.name+'/encounters')  My Encounters
           hr
         div.col-md-9
           div.grid

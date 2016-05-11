@@ -124,9 +124,9 @@ app.post('/delete', passportConf.isAuthenticated, encounterController.deleteEnco
 app.post('/download', encounterController.downloadEncounter);
 app.get('/encounter/:id', encounterController.loadEncounter);
 app.get('/encounters', encounterController.getEncounters);
-app.get('/mine', passportConf.isAuthenticated, encounterController.getMyEncounters);
 app.get('/user/:username', userController.getUser);
 app.post('/user/:username', passportConf.isAuthenticated, userController.postUser);
+app.get('/user/:owner/encounters', passportConf.isAuthenticated, encounterController.getEncountersByUser);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);

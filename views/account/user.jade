@@ -1,8 +1,11 @@
 extends ../layout
 
 block content
-  .page-header
-    h3 #{username.profile.name}
+  h3.page-header #{username.profile.name}
   .row
-    h4 <b>Email:</b> #{username.email}
-    h4 <b>Username:</b> #{username.profile.name}
+    .col-md-3
+      a.btn.btn-primary.btn-block.fa.fa-user(href='/user/'+username.profile.name+'/encounters')  View Encounters
+    .col-md-9
+      h4 <b>Email:</b> #{username.email}
+      h4 <b>Username:</b> #{username.profile.name}
+    

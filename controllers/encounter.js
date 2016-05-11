@@ -16,8 +16,8 @@ exports.getEncounters = function(req, res) {
   });
 };
 
-exports.getMyEncounters = function(req, res) {
-  Encounter.find({owner: req.user.profile.name}, function(err, encounter) {
+exports.getEncountersByUser = function(req, res) {
+  Encounter.find({owner: req.params.owner}, function(err, encounter) {
     res.render('encounters', {
       title: 'Encounters',
       encounters: encounter
