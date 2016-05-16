@@ -42,6 +42,25 @@ exports.loadEncounter = function(req, res) {
   });
 };
 
+// Edit Encounters
+exports.editEncounter = function(req, res) {
+  // Check for log in
+  if (!req.user) {
+    req.flash('errors', { msg: "Must log in to edit encounter" });
+    return res.redirect('/login');
+  }
+  else if (req.body.owner != req.user.profile.name) {
+    req.flash('errors', { msg: "You are not the owner of this encounter!"});
+    return res.redirect('/encounters');
+  }
+
+  var id = req.body.id;
+  
+  Encounter.findByIdAndUpdate(id, { description: req.body.description}, { title: req.body.title }, function() {
+    res.redirect('/encounters');
+  });
+}
+
 /**
  * GET /encounter
  * Encounter page.
@@ -100,7 +119,7 @@ exports.postEncounter = function(req, res) {
 exports.deleteEncounter = function(req, res) {
   // Check for log in
   if (!req.user) {
-    req.flash('errors', { msg: "Must log in to create encounter" });
+    req.flash('errors', { msg: "Must log in to delete encounter" });
     return res.redirect('/login');
   }
   else if (req.body.owner != req.user.profile.name) {
