@@ -57,6 +57,10 @@ body {
 }
 
 /* Static navbar */
+.navbar {
+  background: #fff;
+}
+
 .navbar-nav img {
   width: 30px;
   height: 30px;

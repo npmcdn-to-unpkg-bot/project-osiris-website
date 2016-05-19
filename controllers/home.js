@@ -8,7 +8,7 @@ var Encounter = require('../models/Encounter');
  */
 exports.index = function(req, res) {
   Encounter.find({}, function(err, encounter) {
-    res.render('home', {
+    res.render('index', {
       title: 'Home'
     });
   });
