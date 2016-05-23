@@ -27,6 +27,14 @@ body {
   width: 30px;
 }
 
+.navbar {
+  background: #fff;
+}
+
+.icon-bar {
+  background: black;
+}
+
 .center {
   position: relative;
   left: 50%;

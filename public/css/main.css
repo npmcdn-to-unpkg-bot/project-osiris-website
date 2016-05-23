@@ -61,6 +61,10 @@ body {
   background: #fff;
 }
 
+.icon-bar {
+  color: black;
+}
+
 .navbar-nav img {
   width: 30px;
   height: 30px;
