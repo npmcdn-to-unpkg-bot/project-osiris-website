@@ -13,3 +13,8 @@ exports.index = function(req, res) {
     });
   });
 };
+
+exports.download = function(req, res) {
+  var file = './upload/dist.zip';
+  res.download(file);
+}
