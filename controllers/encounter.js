@@ -42,6 +42,22 @@ exports.loadEncounter = function(req, res) {
   });
 };
 
+exports.editEncounterView = function(req, res) {
+  Encounter.findById(req.params.id, function(err, enc) {
+    if (err) {
+      req.flash('error', {msg: "Encounter not found."});
+      res.redirect('/encounters');
+    }
+    else {
+      res.render('edit', {
+        title: enc.title,
+        owner: enc.owner,
+        description: enc.description,
+        id: enc._id
+      })
+    }
+  });
+}
 // Edit Encounters
 exports.editEncounter = function(req, res) {
   // Check for log in
@@ -49,14 +65,15 @@ exports.editEncounter = function(req, res) {
     req.flash('errors', { msg: "Must log in to edit encounter" });
     return res.redirect('/login');
   }
+  // Need a more secure way to get owner, this can easily be faked
   else if (req.body.owner != req.user.profile.name) {
     req.flash('errors', { msg: "You are not the owner of this encounter!"});
     return res.redirect('/encounters');
   }
-
-  var id = req.body.id;
-  
-  Encounter.findByIdAndUpdate(id, { description: req.body.description}, { title: req.body.title }, function() {
+  console.log(req.body.title, req.body.description);
+  var id = req.params.id;
+  Encounter.findByIdAndUpdate(id, { description: req.body.description, title: req.body.title }, function(err, enc) {
+    req.flash('success', {msg: "Encounter successfully edited!"});
     res.redirect('/encounters');
   });
 }
@@ -122,6 +139,7 @@ exports.deleteEncounter = function(req, res) {
     req.flash('errors', { msg: "Must log in to delete encounter" });
     return res.redirect('/login');
   }
+  // Need a more secure way to get owner, this can easily be faked
   else if (req.body.owner != req.user.profile.name) {
     req.flash('errors', { msg: "You are not the owner of this encounter!"});
     return res.redirect('/encounters');
@@ -153,7 +171,7 @@ exports.downloadEncounter = function(req, res) {
 
   // Check for log in
   if (!req.user) {
-    req.flash('errors', { msg: "Must log in to create encounter" });
+    req.flash('errors', { msg: "Must log in to download encounter" });
     return res.redirect('/login');
   }
 
@@ -173,3 +191,21 @@ exports.downloadEncounter = function(req, res) {
   res.set('Content-Type', 'text/csv');
   res.status(200).send(csvContent);
 };
+
+exports.downloadAllEncounters = function(req, res) {
+  Encounter.find({}, function(err, encounter) {
+    var csv = [["title", "description"]];
+    var csvContent = "";
+    encounter.forEach(function(enc, ind) {
+      csv.push([enc.title, enc.description]);
+    });
+    csv.forEach(function(infoArray, index){
+      dataString = infoArray.join(",");
+      csvContent += index < csv.length ? dataString+ "\n" : dataString;
+    });
+    // Download CSV
+    res.setHeader('Content-disposition', 'attachment; filename=all_encounters.csv');
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(csvContent);
+  });
+}

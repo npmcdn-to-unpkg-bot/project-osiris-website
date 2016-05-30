@@ -13,7 +13,7 @@ block content
                 button.btn.btn-block.btn-success.btn-space(type='submit') 
                     i.fa.fa-download  Download CSV
             if user && user.profile.name==owner
-                button.btn.btn-block.btn-warning.btn-space
+                a.btn.btn-block.btn-warning.btn-space(href="/encounter/#{id}/edit")
                     i.fa.fa-pencil  Edit Encounter
                 form.form-horizontal(action='/delete' role='form', method='POST')
                     input(type='hidden', name='_csrf', value=_csrf)
