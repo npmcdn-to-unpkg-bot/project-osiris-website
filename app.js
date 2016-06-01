@@ -130,6 +130,7 @@ app.post('/encounter/:id/edit', encounterController.editEncounter);
 app.get('/user/:username', userController.getUser);
 app.post('/user/:username', passportConf.isAuthenticated, userController.postUser);
 app.get('/user/:owner/encounters', passportConf.isAuthenticated, encounterController.getEncountersByUser);
+app.get('/user/:owner/encounters/download', encounterController.downloadEncountersByUser);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);

@@ -6,7 +6,10 @@ block content
         hr
         div.col-md-3
           a.btn.btn-success.btn-block.fa.fa-plus(href='/new')  New Encounter
-          a.btn.btn-warning.btn-block.fa.fa-download(href='/encounters/download')  Download All
+          if path
+            a.btn.btn-warning.btn-block.fa.fa-download(href=path+'/download')  Download All
+          else
+            a.btn.btn-warning.btn-block.fa.fa-download(href='/encounters/download')  Download All
           if user
             a.btn.btn-primary.btn-block.fa.fa-user(href='/user/'+user.profile.name+'/encounters')  My Encounters
           hr

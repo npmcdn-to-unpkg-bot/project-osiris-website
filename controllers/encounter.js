@@ -20,7 +20,8 @@ exports.getEncountersByUser = function(req, res) {
   Encounter.find({owner: req.params.owner}, function(err, encounter) {
     res.render('encounters', {
       title: 'Encounters',
-      encounters: encounter
+      encounters: encounter,
+      path: req.path
     })
   });
 }
@@ -205,6 +206,24 @@ exports.downloadAllEncounters = function(req, res) {
     });
     // Download CSV
     res.setHeader('Content-disposition', 'attachment; filename=all_encounters.csv');
+    res.set('Content-Type', 'text/csv');
+    res.status(200).send(csvContent);
+  });
+}
+
+exports.downloadEncountersByUser = function(req, res) {
+  Encounter.find({owner: req.params.owner}, function(err, encounter) {
+    var csv = [["title", "description"]];
+    var csvContent = "";
+    encounter.forEach(function(enc, ind) {
+      csv.push([enc.title, enc.description]);
+    });
+    csv.forEach(function(infoArray, index){
+      dataString = infoArray.join(",");
+      csvContent += index < csv.length ? dataString+ "\n" : dataString;
+    });
+    // Download CSV
+    res.setHeader('Content-disposition', 'attachment; filename='+req.params.owner.replace(/\s/g, "_")+'_encounters.csv');
     res.set('Content-Type', 'text/csv');
     res.status(200).send(csvContent);
   });
