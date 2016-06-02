@@ -15,6 +15,6 @@ exports.index = function(req, res) {
 };
 
 exports.download = function(req, res) {
-  var file = './upload/dist.zip';
+  var file = './upload/DRAGONS_beta_build_1.zip';
   res.download(file);
 }
